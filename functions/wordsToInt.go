@@ -1,5 +1,9 @@
 package translator
 
+import (
+	"strconv"
+)
+
 func IsValidWord(str string) bool {
 	Words := []string{
 		"one", "two", "three", "four", "five",
@@ -98,3 +102,111 @@ func IsTens(n int) bool {
 
 	return false
 }
+
+func TensValue(n int) int {
+	str := strconv.Itoa(n)
+	ans := ""
+	for _, v := range str {
+		if v == '0' {
+			ans += string(v)
+		}
+	}
+	ans = "1" + ans
+	result, _ := strconv.Atoi(ans)
+	return result
+}
+
+func PrintNumberWithComma(n int) string {
+	str := strconv.Itoa(n)
+	result := ""
+	if len(str)%3 == 0 {
+		for i, v := range str {
+			result += string(v)
+			if (i+1)%3 == 0 && i != len(str)-1 {
+				result += ","
+			}
+		}
+	}
+
+	if (len(str)+1)%3 == 0 {
+		for i, v := range str {
+			result += string(v)
+			// if i == 1 {
+			// 	result += string(v)
+			// 	continue
+			// }
+			if (i+2)%3 == 0 && i != len(str)-1 {
+				result += ","
+			}
+		}
+	}
+
+	if (len(str)+2)%3 == 0 {
+		for i, v := range str {
+			result += string(v)
+			// if i == 1 {
+			// 	result += string(v)
+			// 	continue
+			// }
+			if i%3 == 0 && i != len(str)-1 {
+				result += ","
+			}
+		}
+	}
+
+	return result
+
+}
+
+func TranslateToInt(str []int) (int, string) {
+	if len(str) == 1 && str[0] == 100 {
+		return 100, "100"
+	}
+	// fmt.Println(str)
+	ans := []int{}
+	value := 0
+
+	for i := 0; i < len(str); i++ {
+		if IsTens(str[i]) {
+			if i == 0 {
+				value = 1 * str[i]
+			} else {
+				value = value * str[i]
+			}
+		} else if i != 0 && IsTens(str[i-1]) {
+
+			ans = append(ans, value)
+			value = 0
+			value += str[i]
+
+		} else {
+			value += str[i]
+		}
+	}
+
+	if value != 0 {
+		ans = append(ans, value)
+	}
+	if len(ans) == 1 {
+		return ans[0], PrintNumberWithComma(ans[0])
+	}
+	final := 0
+	for i := 1; i < len(ans); i++ {
+		if ans[i] > ans[i-1] {
+			// fmt.Println(TensValue(ans[i]))
+			k := ans[i-1]*TensValue(ans[i]) + ans[i]
+			final += k
+		} else if i == 1 {
+			final += ans[i-1]
+			final += ans[i]
+
+		} else {
+			final += ans[i]
+		}
+	}
+	return final, PrintNumberWithComma(final)
+}
+
+// 5 100 50 2 1000 3 100 1
+// 300
+// [500,52000,300,1]
