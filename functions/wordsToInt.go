@@ -206,7 +206,3 @@ func TranslateToInt(str []int) (int, string) {
 	}
 	return final, PrintNumberWithComma(final)
 }
-
-// 5 100 50 2 1000 3 100 1
-// 300
-// [500,52000,300,1]
