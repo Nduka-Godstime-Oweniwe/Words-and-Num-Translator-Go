@@ -1,6 +1,7 @@
 package translator
 
 import (
+	"fmt"
 	"strconv"
 )
 
@@ -50,7 +51,7 @@ func ConvertToInt(str string) int {
 
 	next := []string{
 		"thirty", "forty", "fifty",
-		"sixty", "seventy", "eighty", "ninty",
+		"sixty", "seventy", "eighty", "ninety",
 		"hundred",
 	}
 
@@ -111,8 +112,24 @@ func TensValue(n int) int {
 			ans += string(v)
 		}
 	}
+
 	ans = "1" + ans
 	result, _ := strconv.Atoi(ans)
+	if result == 10000 {
+		return 1000
+	}
+
+	if result == 10000000 {
+		return 1000000
+	}
+
+	if result == 10000000000 {
+		return 1000000000
+	}
+
+	if result == 10000000000000 {
+		return 1000000000000
+	}
 	return result
 }
 
@@ -159,10 +176,11 @@ func PrintNumberWithComma(n int) string {
 }
 
 func TranslateToInt(str []int) (int, string) {
+	// fmt.Println(str)
 	if len(str) == 1 && str[0] == 100 {
 		return 100, "100"
 	}
-	// fmt.Println(str)
+	fmt.Println(str)
 	ans := []int{}
 	value := 0
 
@@ -181,28 +199,45 @@ func TranslateToInt(str []int) (int, string) {
 
 		} else {
 			value += str[i]
+
 		}
 	}
 
 	if value != 0 {
 		ans = append(ans, value)
 	}
+	fmt.Println(ans)
 	if len(ans) == 1 {
 		return ans[0], PrintNumberWithComma(ans[0])
 	}
 	final := 0
 	for i := 1; i < len(ans); i++ {
 		if ans[i] > ans[i-1] {
-			// fmt.Println(TensValue(ans[i]))
+			fmt.Println(TensValue(ans[i]))
 			k := ans[i-1]*TensValue(ans[i]) + ans[i]
 			final += k
 		} else if i == 1 {
 			final += ans[i-1]
+			if i != len(ans)-1 {
+				if ans[i+1] > ans[i] {
+					continue
+				}
+			}
 			final += ans[i]
 
+		} else if i != len(ans)-1 {
+			if ans[i+1] > ans[i] {
+				continue
+			} else {
+				final += ans[i]
+
+			}
 		} else {
 			final += ans[i]
 		}
+		// } else {
+		// 	final += ans[i]
+		// }
 	}
 	return final, PrintNumberWithComma(final)
 }
