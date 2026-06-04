@@ -1,8 +1,8 @@
 package translator
 
 import (
-	"fmt"
 	"strconv"
+	"strings"
 )
 
 func IsValidWord(str string) bool {
@@ -175,12 +175,14 @@ func PrintNumberWithComma(n int) string {
 
 }
 
-func TranslateToInt(str []int) (int, string) {
+func TranslateToInt(words string) (int, string) {
 	// fmt.Println(str)
+	slice := strings.Fields(words)
+	str := SliceOfInt(slice)
 	if len(str) == 1 && str[0] == 100 {
 		return 100, "100"
 	}
-	fmt.Println(str)
+	// fmt.Println(str)
 	ans := []int{}
 	value := 0
 
@@ -206,14 +208,14 @@ func TranslateToInt(str []int) (int, string) {
 	if value != 0 {
 		ans = append(ans, value)
 	}
-	fmt.Println(ans)
+	// fmt.Println(ans)
 	if len(ans) == 1 {
 		return ans[0], PrintNumberWithComma(ans[0])
 	}
 	final := 0
 	for i := 1; i < len(ans); i++ {
 		if ans[i] > ans[i-1] {
-			fmt.Println(TensValue(ans[i]))
+			// fmt.Println(TensValue(ans[i]))
 			k := ans[i-1]*TensValue(ans[i]) + ans[i]
 			final += k
 		} else if i == 1 {
