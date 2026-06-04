@@ -13,7 +13,7 @@ func IsValidWord(str string) bool {
 		"fourteen", "fifteen", "sixteen",
 		"seventeen", "eighteen", "nineteen",
 		"twenty", "thirty", "forty", "fifty",
-		"sixty", "seventy", "eighty", "ninty",
+		"sixty", "seventy", "eighty", "ninety",
 		"hundred", "thousand", "million",
 		"billion", "trillion", "and"}
 	for k := 0; k < len(Words); k++ {
@@ -175,12 +175,12 @@ func PrintNumberWithComma(n int) string {
 
 }
 
-func TranslateToInt(words string) (int, string) {
+func TranslateToInt(words string) int {
 	// fmt.Println(str)
 	slice := strings.Fields(words)
 	str := SliceOfInt(slice)
 	if len(str) == 1 && str[0] == 100 {
-		return 100, "100"
+		return 100
 	}
 	// fmt.Println(str)
 	ans := []int{}
@@ -210,7 +210,7 @@ func TranslateToInt(words string) (int, string) {
 	}
 	// fmt.Println(ans)
 	if len(ans) == 1 {
-		return ans[0], PrintNumberWithComma(ans[0])
+		return ans[0]
 	}
 	final := 0
 	for i := 1; i < len(ans); i++ {
@@ -241,5 +241,5 @@ func TranslateToInt(words string) (int, string) {
 		// 	final += ans[i]
 		// }
 	}
-	return final, PrintNumberWithComma(final)
+	return final
 }
